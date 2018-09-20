@@ -2,6 +2,26 @@
 namespace Brigid\Components {
 	
 	abstract class Block {
+
+		protected $meta = array();
+
+		public function __construct($properties = []) {
+			foreach ($properties as $label => $value) {
+				$this->$label = $value;
+			}
+		}
+
+		public function __get($name) {
+			if (array_key_exists($name, $this->meta)) {
+				return $this->meta[$name];
+			}
+
+			return "Block property " . $name . " does not exist.";
+		}
+
+		public function __set($name, $value) {
+			$this->meta[$name] = $value;
+		}
 		
 		public function getName() {
 			/* Gets the unencoded name of the block name
@@ -41,13 +61,33 @@ namespace Brigid\Components {
 		}
 		
 		/* Representation */
-		public function __toString() {
+		public function toString() {
 			/* Returns a representation of this class in string format, primarily for debugging purposes */
-			return 'todo';
+			return $this->getName();
 		}
-		
+
 		/* Data Portability */
-		public function 
+		public function toJSON() {
+			return json_encode($this);
+		}
+
+		public function toHTMLStream() {
+			/* Used when the template engine supports streaming chunks of markup */
+			return [];
+		}
+
+		public function toHTML() {
+			/* Buffers the HTML Stream and then returns it */
+			$response = '';
+			foreach ($this->toHTMLStream() as $chunk) {
+				$response += $chunk;
+			}
+		}
+
+		public function toXML() {
+			/* Returns the representation of this object as an XML string */
+			return 'XML method is not defined for this block';
+		}
 	}
 	
 }
