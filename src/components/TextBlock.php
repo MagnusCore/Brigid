@@ -1,11 +1,12 @@
 <?php
 namespace Brigid\Components {
 	
-	class DescriptionBlock extends Block {
+	class TextBlock extends Block {
 		
 		public function __construct($properties) {
-			$properties['icon'] = 'asterisk';
+			$properties['icon'] = 'font';
 			parent::__construct($properties);
+
 		}
 		
 	}
