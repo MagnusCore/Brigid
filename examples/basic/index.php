@@ -1,4 +1,14 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once 'autoload.php'; //Application autoloader
+
+$context = [
+	'debug' => true
+];
+$logger     = new \Loggers\ScreenLogger(); //Basic print to screen logger
 /* Parse request accordingly*/
 
 /* Route the request to get the appropriate handler */
@@ -13,15 +23,15 @@ $responseData = [
 			[
 				'id' => 1,
 				'label' => 'Title',
-				'machine-name' => 'title-heading'
-				'type' => 'TextBlock',
+				'machine-name' => 'title-heading',
+				'block-type' => 'TextBlock',
 				'content' => '<h1>{== $title =}</h1>',
 				'classes' => 'title-heading'
 			],
 			[
 				'id' => 2,
 				'label' => 'homepage-promoted-content',
-				'type' => 'TextBlock',
+				'block-type' => 'TextBlock',
 				'content' => 'Promoted content carousel',
 				'classes' => 'carousel promoted'
 			],
@@ -29,7 +39,7 @@ $responseData = [
 				'id' => 3,
 				'label' => 'Homepage Store Links',
 				'machine-name' => 'homepage-store-links',
-				'type' => 'TextBlock',
+				'block-type' => 'TextBlock',
 				'content' => 'Homepage store links',
 				'classes' => 'signpost'
 			],
@@ -37,7 +47,7 @@ $responseData = [
 				'id' => 4,
 				'label' => 'Homepage Latest News',
 				'machine-name' => 'homepage-news',
-				'type' => 'TextBlock',
+				'block-type' => 'TextBlock',
 				'content' => 'Latest news',
 				'classes' => 'news'
 			]
@@ -45,5 +55,17 @@ $responseData = [
 	]
 ];
 
+/* Using Brigid to translate block metadata into objects for consumption via rendering engine */
+$brigid = new \Brigid\Smith($context, $logger);
+
+foreach ($responseData['blocks'] as $region => $regionBlocks) {
+	$$region = [];
+	foreach ($brigid($context, $regionBlocks) as $block) {
+		$$region[] = $block;
+	}
+}
+
+echo var_dump($content, true);
 /* Interpret desired result format, we're assuming our desired format is text/html */
+
 echo "Hello World!";
