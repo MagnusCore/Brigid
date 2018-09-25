@@ -1,12 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once 'autoload.php'; //Application autoloader
 
 $context = [
-	'debug' => true
+	'debug' => false
 ];
 $logger     = new \Loggers\ScreenLogger(); //Basic print to screen logger
 /* Parse request accordingly*/
@@ -26,14 +23,18 @@ $responseData = [
 				'machine-name' => 'title-heading',
 				'block-type' => 'TextBlock',
 				'content' => '<h1>{== $title =}</h1>',
-				'classes' => 'title-heading'
+				'attributes' => [
+					'class' => 'title-heading TextBlock'	
+				]
 			],
 			[
 				'id' => 2,
 				'label' => 'homepage-promoted-content',
 				'block-type' => 'TextBlock',
 				'content' => 'Promoted content carousel',
-				'classes' => 'carousel promoted'
+				'attributes' => [
+					'class' => 'carousel promoted TextBlock'	
+				]
 			],
 			[
 				'id' => 3,
@@ -41,7 +42,9 @@ $responseData = [
 				'machine-name' => 'homepage-store-links',
 				'block-type' => 'TextBlock',
 				'content' => 'Homepage store links',
-				'classes' => 'signpost'
+				'attributes' => [
+					'class' => 'signpost TextBlock'	
+				]
 			],
 			[
 				'id' => 4,
@@ -49,7 +52,9 @@ $responseData = [
 				'machine-name' => 'homepage-news',
 				'block-type' => 'TextBlock',
 				'content' => 'Latest news',
-				'classes' => 'news'
+				'attributes' => [
+					'class' => 'news TextBlock'	
+				]
 			]
 		]
 	]
@@ -58,14 +63,22 @@ $responseData = [
 /* Using Brigid to translate block metadata into objects for consumption via rendering engine */
 $brigid = new \Brigid\Smith($context, $logger);
 
+$toRender = [];
 foreach ($responseData['blocks'] as $region => $regionBlocks) {
-	$$region = [];
 	foreach ($brigid($context, $regionBlocks) as $block) {
-		$$region[] = $block;
+		$toRender[$region][] = $block;
 	}
 }
 
-echo var_dump($content, true);
-/* Interpret desired result format, we're assuming our desired format is text/html */
+/* We now have a list of blocks available in $toRender, this is what should be fed to your rendering engine to get
+ * an appropriate return. First, we're interpreting the desired result format here and then telling the engine what
+ * to use. In this example, we're assuming that the user desires text/html.
+ */
 
-echo "Hello World!";
+/* Example rendering engine
+ * Just a lazy rendering engine that calls the default template for the block provided with Brigid. We're only rendering
+ * the content variable for this example;
+ */
+ foreach ($toRender['content'] as $block) {
+	 echo $block->toHTML();
+ }

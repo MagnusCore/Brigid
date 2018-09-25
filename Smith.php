@@ -51,10 +51,15 @@ namespace Brigid {
 			foreach ($blockIterator as $block) {
 
 				if ($context['debug'] && $this->logger) {
-					$this->logger->debug('Current block metadata: ' . var_export($block, true));
+					$this->logger->debug('Current block metadata: ' . htmlentities(var_export($block, true)));
 				}
 
-				yield $block['content'];
+				$blockType = "\\Brigid\\Components\\" . $block['block-type'];
+				$blockObj = new $blockType($block);
+				if ($context['debug'] && $this->logger) {
+					$this->logger->debug('Current block as obj: ' . htmlentities(var_export($blockObj, true)));
+				}
+				yield $blockObj;
 			}
 
 		}

@@ -6,6 +6,7 @@ namespace Brigid\Components {
 		protected $meta = array();
 
 		public function __construct($properties = []) {
+			$this->attributes = [];
 			foreach ($properties as $label => $value) {
 				$this->$label = $value;
 			}
@@ -72,16 +73,11 @@ namespace Brigid\Components {
 		}
 
 		public function toHTMLStream() {
-			/* Used when the template engine supports streaming chunks of markup */
-			return [];
+			return "toHTMLStream is not defined for this block";
 		}
 
 		public function toHTML() {
-			/* Buffers the HTML Stream and then returns it */
-			$response = '';
-			foreach ($this->toHTMLStream() as $chunk) {
-				$response += $chunk;
-			}
+			return "toHTML is not defined for this block";
 		}
 
 		public function toXML() {

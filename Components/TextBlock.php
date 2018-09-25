@@ -9,6 +9,17 @@ namespace Brigid\Components {
 
 		}
 		
+		public function toHTML() {
+			$htmlfragment = '<section data-block="' . $this->id . '" ';
+			foreach ($this->attributes as $label => $value) {
+				$htmlfragment .= $label . '="' . $value . '" ';
+			}
+			$htmlfragment .= '>' . $this->content . '</section>';
+			
+			return $htmlfragment;
+			
+		}
+		
 	}
 	
 }
