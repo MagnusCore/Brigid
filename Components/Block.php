@@ -67,6 +67,48 @@ namespace Brigid\Components {
 			return $this->getName();
 		}
 
+		public function renderAssetPanel() {
+			$blockName = $this->getName();
+			$blockTitle = $this->label;
+			$blockDescription = 'No Description';
+			if (!empty($this->description)) {
+				$blockDescription = $this->description;
+			}
+			$blockTags = 'No tags';
+			if (!empty($this->tags)) {
+				$blockTags = $this->tags;
+			}
+			$blockCreationDate = $this->createdAt;
+			$blockModifiedDate = $this->modifiedAt;
+
+			return <<< FRAGMENT
+				<li class="asset-panel">
+					<h4>
+						General
+						<a href="#" style="display: inline-block; margin: -10px;">
+							<sup style="display: inline-block; padding: 10px 10px 0;">
+								<i class="fa fa-question-circle small"></i>
+							</sup>
+						</a>
+					</h4>
+					<dl>
+						<dt>Name</dt>
+						<dd>$blockName</dd>
+						<dt>Title</dt>
+						<dd>$blockTitle</dd>
+						<dt>Description</dt>
+						<dd>$blockDescription</dd>
+						<dt>Tags</dt>
+						<dd>$blockTags</dd>
+						<dt>Created</dt>
+						<dd>$blockCreationDate</dd>
+						<dt>Modified</dt>
+						<dd>$blockModifiedDate</dd>
+					</dl>
+				</li>
+FRAGMENT;
+		}
+
 		/* Data Portability */
 		public function toJSON() {
 			return json_encode($this);

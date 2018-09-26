@@ -25,16 +25,21 @@ $responseData = [
 				'content' => '<h1>{== $title =}</h1>',
 				'attributes' => [
 					'class' => 'title-heading TextBlock'	
-				]
+				],
+				'createdAt' => '2018-09-26T02:14:27',
+				'modifiedAt' => '2018-09-26T02:14:27'
 			],
 			[
 				'id' => 2,
-				'label' => 'homepage-promoted-content',
+				'label' => 'Homepage Promoted Content',
+				'machine-name' => 'homepage-promoted-content',
 				'block-type' => 'TextBlock',
 				'content' => 'Promoted content carousel',
 				'attributes' => [
 					'class' => 'carousel promoted TextBlock'	
-				]
+				],
+				'createdAt' => '2018-09-26T02:14:27',
+				'modifiedAt' => '2018-09-26T02:14:27'
 			],
 			[
 				'id' => 3,
@@ -44,7 +49,9 @@ $responseData = [
 				'content' => 'Homepage store links',
 				'attributes' => [
 					'class' => 'signpost TextBlock'	
-				]
+				],
+				'createdAt' => '2018-09-26T02:14:27',
+				'modifiedAt' => '2018-09-26T02:14:27'
 			],
 			[
 				'id' => 4,
@@ -54,7 +61,9 @@ $responseData = [
 				'content' => 'Latest news',
 				'attributes' => [
 					'class' => 'news TextBlock'	
-				]
+				],
+				'createdAt' => '2018-09-26T02:14:27',
+				'modifiedAt' => '2018-09-26T02:14:27'
 			]
 		]
 	]
@@ -82,3 +91,11 @@ foreach ($responseData['blocks'] as $region => $regionBlocks) {
  foreach ($toRender['content'] as $block) {
 	 echo $block->toHTML();
  }
+ ?>
+ <ul class="assetPanel">
+ 	<?php
+ 		foreach ($toRender['content'] as $block) {
+			 echo $block->renderAssetPanel();
+		 }
+ 	?>
+ </ul>
